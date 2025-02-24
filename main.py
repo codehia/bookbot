@@ -1,14 +1,19 @@
+from stats import count_words
+import sys
+
+
 def main():
-    book_name = "books/frankenstein.txt"
+    print(len(sys.argv))
+    if len(sys.argv) != 2:
+        print("Usage: python3 main.py <path_to_book>")
+        sys.exit(1)
+
+    book_name = sys.argv[1]
     with open(book_name) as f:
         file_contents = f.read()
         word_count = count_words(file_contents)
         character_counts = count_characters(file_contents)
         create_report(word_count, character_counts, book_name)
-
-
-def count_words(file_contents):
-    return len(file_contents.split())
 
 
 def count_characters(file_contents):
@@ -36,7 +41,7 @@ def sort_on(dict):
 
 def create_report(word_count, character_counts, book_name):
     header = f"--- Begin report of {book_name} ---"
-    word_count_header = f"{word_count} words found in the {book_name}"
+    word_count_header = f"{word_count} words found in the document"
     footer = f"--- End report of {book_name} ---"
     charater_counts_list = convert_to_list_of_dicts_of_alphabets(
         character_counts)
@@ -45,7 +50,7 @@ def create_report(word_count, character_counts, book_name):
     print(word_count_header)
     print("\n\n")
     for character_count in charater_counts_list:
-        print(f"The '{character_count['character']}' character was found {character_count['count']} times.")  # noqa
+        print(f"{character_count['character']}: {character_count['count']}")
     print('\n\n')
     print(footer)
 
